@@ -1,0 +1,67 @@
+module AgentRequest where 
+
+import ProposeQuotation
+
+template AgentRequest with
+    agent : Party
+    company_admin : Party
+    firstname : Text
+    lastname : Text
+    age: Int
+    gender: Text
+    streetaddress: Text
+    city: Text
+    province: Text
+    contactnumber: Int
+    email: Text
+  where
+    signatory  agent
+   
+    controller company_admin can 
+        ApproveAgentRequest : ContractId ActiveAgent
+            with
+              date_approved : Time
+            do
+              date_approve <- getTime
+              create ActiveAgent 
+                with
+                  ..
+   
+                  
+template ActiveAgent with
+    agent : Party
+    company_admin : Party
+    firstname : Text
+    lastname : Text
+    age: Int
+    gender: Text
+    streetaddress: Text
+    city: Text
+    province: Text
+    contactnumber: Int
+    email: Text
+  
+  where
+      signatory  agent,company_admin
+      ensure company_admin /= agent
+      key (agent,company_admin):(Party,Party)
+      maintainer key._2
+
+      controller agent can
+        nonconsuming ProposeQuotation : ContractId QuotationProposal
+          with
+              applicant_fullname: Text
+              applicant : Party
+              applicant_age : Int
+              applicant_coverage : Decimal
+              applicant_premium : Decimal
+          do
+            create QuotationProposal
+              with
+                  applicant = applicant
+                  fullname= applicant_fullname
+                  age = applicant_age
+                  coverage = applicant_coverage
+                  premium = applicant_premium
+                  ..
+       

@@ -1,0 +1,19 @@
+module Payment where
+
+template PremiumPayment with
+    agent : Party
+    company_admin : Party
+    applicant : Party
+    fullname: Text
+    age : Int
+    coverage : Decimal
+    premium : Decimal
+    card_no : Int
+    card_expiry : Text
+    status : Text
+  where
+    signatory  applicant
+    observer company_admin
+ 
+   
+    

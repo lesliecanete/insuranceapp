@@ -1,0 +1,29 @@
+module Products where
+
+template Products with
+    name : Text
+    description : Text
+    minimum : Decimal
+    userAdmin : Party
+    
+  where
+    signatory  userAdmin
+    controller userAdmin can
+      nonconsuming UpdateLoanType : ContractId LoanType
+        with
+          new_name : Text
+          new_description : Text
+          new_minloanamount : Decimal
+          new_maxloanamount : Decimal
+          new_interest : Decimal
+          new_interestType: Text
+          new_userAdmin : Party
+        do
+          create LoanType with
+            name = new_name
+            description = new_description
+            minloanamount = new_minloanamount
+            maxloanamount = new_maxloanamount
+            interest = new_interest
+            interestType = new_interestType
+            userAdmin = new_userAdmin

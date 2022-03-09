@@ -1,0 +1,48 @@
+module NewBusinessRequest where 
+
+
+template NewBusinessRequest with
+    agent : Party
+    company_admin : Party
+    applicant : Party
+    underwriter : Party
+    fullname: Text
+    age : Int
+    coverage : Decimal
+    premium : Decimal
+    card_no : Int
+    card_expiry : Text
+    payment_status : Text
+    policy_status : Text
+    additional_requirements : Text
+
+  where
+    signatory  underwriter,company_admin
+    observer agent
+    -- controller nb_company_admin can 
+    --     ApproveNBRequest : ContractId Applicant
+    --         with
+    --           date_applied : Time
+    --         do
+    --           date_approve <- getTime
+    --           create Applicant 
+    --             with
+    --               date_approve = date_approve
+    --               nb_status   ="for processing"
+    --               ..
+
+        -- ProcessPayment : ContractId Payment
+        --   with
+        --     date_paid : Date
+        --   do 
+        --     create Payment
+        --       with
+        --         payment_method = "cash"
+        --         mode_of_payment ="monthly"
+        --         or_number ="1234"
+        --         amount =20000.00
+        --         reference_number = "R23456"
+        --         policy_number = "169233010"
+        --         date_paid = date_paid
+        --         ..
+              

@@ -1,0 +1,62 @@
+module Main where
+
+import Daml.Script
+import AgentRequest 
+import ProposeQuotation
+
+setup : Script ()
+setup = script do
+les <- allocatePartyWithHint "Leslie" (PartyIdHint "Leslie")
+companyAdmin <- allocatePartyWithHint "companyAdmin" (PartyIdHint "companyAdmin")
+sarah <- allocatePartyWithHint "Sarah" (PartyIdHint "Sarah")
+underwriter <- allocatePartyWithHint "Underwriter" (PartyIdHint "underwriter")
+
+lesAgentRequest <- submit les do
+  createCmd AgentRequest 
+      with 
+        company_admin = companyAdmin 
+        agent = les
+        firstname = "Leslie"
+        lastname = "Cruz"
+        age= 20
+        gender= "Female"
+        streetaddress = "Penaflor"
+        city= "N/A"
+        province = "None"
+        contactnumber= 1234567
+        email= "les@gmail.com"
+
+date_approved <- getTime
+
+lesAsAgent <- submit companyAdmin do
+    exerciseCmd lesAgentRequest ApproveAgentRequest
+      with
+        ..
+let applicant_age=35
+
+lesApplicationRequest <- submit les do
+  exerciseCmd lesAsAgent ProposeQuotation 
+      with
+        applicant_fullname= "Sarah C."
+        applicant = sarah
+        applicant_age = applicant_age
+        applicant_coverage = 1000000.00
+        applicant_premium = 24000.00
+
+sarahAccept <- submit sarah do
+  exerciseCmd lesApplicationRequest AcceptProposedQuotation
+
+sarahPayment <- submit sarah do
+  exerciseCmd sarahAccept PaythePremium
+      with
+        card_no =12344
+        card_expiry = "12/2024"
+
+-- agent will proceed
+
+-- submit userAdmin do
+--   exerciseCmd maxpayment ApproveNBRequest
+--     with
+--       date_applied = date_approve
+--       ..
+return ()

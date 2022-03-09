@@ -1,0 +1,45 @@
+module ProposeQuotation where
+
+import Payment
+import NewBusinessRequest
+
+template QuotationProposal with
+        agent : Party
+        company_admin : Party
+        applicant : Party
+        fullname: Text
+        age : Int
+        coverage : Decimal
+        premium : Decimal
+    where
+        signatory agent
+        observer company_admin
+
+        controller applicant can
+            AcceptProposedQuotation : ContractId QuotationAgreement
+                do
+                    create QuotationAgreement with ..
+
+template QuotationAgreement with
+        agent : Party
+        company_admin : Party
+        applicant : Party
+        fullname: Text
+        age : Int
+        coverage : Decimal
+        premium : Decimal
+    where
+        signatory applicant
+        observer company_admin
+
+        controller applicant can
+            nonconsuming  PaythePremium : ContractId PremiumPayment
+                with
+                    card_no : Int
+                    card_expiry : Text
+                do
+                    create PremiumPayment 
+                        with 
+                            status = "Paid"
+                            ..
+

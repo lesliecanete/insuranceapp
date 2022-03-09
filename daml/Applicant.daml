@@ -1,0 +1,33 @@
+module Applicant where
+
+import ProposeQuotation
+
+
+template Applicant with
+    agent : Party
+    company_admin : Party
+    applicant : Party
+    firstname : Text
+    lastname : Text
+    age: Int
+    gender: Text
+    streetaddress: Text
+    city: Text
+    province: Text
+    contactnumber: Int
+    email: Text
+    date_approve : Time
+    nb_status : Text
+    
+  where
+    signatory  applicant,agent
+    ensure applicant /= agent
+    key (agent,company_admin):(Party,Party)
+    maintainer key._2
+
+    controller applicant can
+      AcceptProposedQuotation : ContractId QuotationProposal
+          do
+              create QuotationAgreement with ..
+
+
