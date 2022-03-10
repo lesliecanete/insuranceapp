@@ -18,12 +18,7 @@ lesAgentRequest <- submit les do
         agent = les
         firstname = "Leslie"
         lastname = "Cruz"
-        age= 20
-        gender= "Female"
-        streetaddress = "Penaflor"
-        city= "N/A"
-        province = "None"
-        contactnumber= 1234567
+        code = "60721456"
         email= "les@gmail.com"
 
 date_approved <- getTime
