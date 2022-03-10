@@ -1,7 +1,6 @@
 module ProposeQuotation where
 
 import Payment
-import NewBusinessRequest
 
 template QuotationProposal with
         agent : Party
